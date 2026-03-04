@@ -20,6 +20,11 @@ class AdminInsights extends ConsumerWidget {
       appBar: AppBar(
         backgroundColor: Colors.greenAccent.shade700,
         elevation: 0,
+        leading: Icon(
+          Icons.chevron_left_outlined,
+          color: Colors.white,
+          size: 40,
+        ),
         automaticallyImplyLeading: false,
         title: const Text(
           'Admin Insights',
@@ -52,7 +57,6 @@ class AdminInsights extends ConsumerWidget {
   }
 }
 
-// ── Body (only rendered when data is loaded) ──────────────────────────
 class _AnalyticsBody extends StatelessWidget {
   final analytics;
   const _AnalyticsBody({required this.analytics});
@@ -67,15 +71,9 @@ class _AnalyticsBody extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          // ── Period selector ─────────────────────────────────────
-          PeriodSelector(
-            onChanged: (index, period) {
-              // Wire to provider when you add period-based filtering
-            },
-          ),
+          PeriodSelector(onChanged: (index, period) {}),
           const SizedBox(height: 16),
 
-          // ── Overview ────────────────────────────────────────────
           _label('Overview'),
           const SizedBox(height: 10),
           GridView.count(
@@ -114,7 +112,6 @@ class _AnalyticsBody extends StatelessWidget {
           ),
           const SizedBox(height: 12),
 
-          // Active artisans + cancelled banner
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             decoration: BoxDecoration(
@@ -177,24 +174,19 @@ class _AnalyticsBody extends StatelessWidget {
           ),
           const SizedBox(height: 20),
 
-          // ── Requests per day chart ──────────────────────────────
           _label('Requests Per Day'),
           const SizedBox(height: 10),
-          RequestsBarChart(data: analytics.requestsByDay), // ← reads from JSON
+          RequestsBarChart(data: analytics.requestsByDay),
           const SizedBox(height: 20),
 
-          // ── Requests by trade ───────────────────────────────────
           _label('Requests by Trade'),
           const SizedBox(height: 10),
-          RequestsByTradeList(
-            data: analytics.requestsByTrade,
-          ), // ← reads from JSON
+          RequestsByTradeList(data: analytics.requestsByTrade),
           const SizedBox(height: 20),
 
-          // ── Top artisans ────────────────────────────────────────
           _label('Top Artisans'),
           const SizedBox(height: 10),
-          TopArtisansList(artisans: analytics.topArtisans), // ← reads from JSON
+          TopArtisansList(artisans: analytics.topArtisans),
           const SizedBox(height: 24),
         ],
       ),
@@ -211,7 +203,6 @@ class _AnalyticsBody extends StatelessWidget {
   );
 }
 
-// ── Error view ────────────────────────────────────────────────────────
 class _ErrorView extends StatelessWidget {
   final String error;
   final VoidCallback onRetry;
