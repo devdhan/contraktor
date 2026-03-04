@@ -20,10 +20,13 @@ class AdminInsights extends ConsumerWidget {
       appBar: AppBar(
         backgroundColor: Colors.greenAccent.shade700,
         elevation: 0,
-        leading: Icon(
-          Icons.chevron_left_outlined,
-          color: Colors.white,
-          size: 40,
+        leading: GestureDetector(
+          onTap: () => Navigator.of(context).pop(),
+          child: Icon(
+            Icons.chevron_left_outlined,
+            color: Colors.white,
+            size: 40,
+          ),
         ),
         automaticallyImplyLeading: false,
         title: const Text(
