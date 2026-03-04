@@ -109,7 +109,6 @@ final profileNotifierProvider =
         error: (e, _) => throw e,
       );
 
-      // Auto-load on first access
       notifier.loadProfile(artisanId);
       return notifier;
     });

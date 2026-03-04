@@ -1,7 +1,8 @@
+import 'package:contraktor/features/artisan/domain/entities/artisan_detail.dart';
 import 'package:flutter/material.dart';
 
 class ReviewTile extends StatelessWidget {
-  final Map<String, dynamic> review;
+  final Review review;
   const ReviewTile({super.key, required this.review});
 
   @override
@@ -15,7 +16,7 @@ class ReviewTile extends StatelessWidget {
             radius: 18,
             backgroundColor: Colors.greenAccent.shade100,
             child: Text(
-              (review['reviewer'] as String)[0],
+              review.reviewer[0],
               style: TextStyle(
                 color: Colors.greenAccent.shade700,
                 fontWeight: FontWeight.bold,
@@ -31,14 +32,14 @@ class ReviewTile extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      review['reviewer'],
+                      review.reviewer,
                       style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 13,
                       ),
                     ),
                     Text(
-                      review['date'],
+                      review.date,
                       style: TextStyle(color: Colors.grey[400], fontSize: 11),
                     ),
                   ],
@@ -50,7 +51,7 @@ class ReviewTile extends StatelessWidget {
                     (i) => Icon(
                       Icons.star_rounded,
                       size: 13,
-                      color: i < (review['rating'] as int)
+                      color: i < review.rating
                           ? const Color(0xFFFBBC04)
                           : Colors.grey[300],
                     ),
@@ -58,7 +59,7 @@ class ReviewTile extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  review['comment'],
+                  review.comment,
                   style: TextStyle(
                     color: Colors.grey[600],
                     fontSize: 12,

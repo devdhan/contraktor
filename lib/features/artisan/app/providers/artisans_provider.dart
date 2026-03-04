@@ -6,11 +6,12 @@ import '../../data/datasources/artisan_local_datasource.dart';
 import '../../data/datasources/artisan_remote_datasource.dart';
 import '../../data/repositories/artisan_repository_impl.dart';
 import '../../domain/entities/artisan.dart';
+import '../../domain/entities/artisan_detail.dart';
 import '../../domain/entities/artisan_filter_params.dart';
+import '../../domain/entities/service_request.dart';
+import '../../domain/repositories/artisan_repository.dart';
 import '../../domain/usecases/get_artisans.dart';
 import '../../domain/usecases/trade_pref_usecases.dart';
-
-// ── State ─────────────────────────────────────────────────────────────
 
 class ArtisansState {
   final List<Artisan> artisans;
@@ -45,8 +46,7 @@ class ArtisansState {
   }
 }
 
-// ── Providers ─────────────────────────────────────────────────────────
-
+//Provider
 final sharedPreferencesProvider = FutureProvider<SharedPreferences>((ref) {
   return SharedPreferences.getInstance();
 });
@@ -60,8 +60,7 @@ final artisanRepositoryProvider = FutureProvider((ref) async {
   );
 });
 
-// ── Notifier ──────────────────────────────────────────────────────────
-
+//Notifier
 class ArtisansNotifier extends StateNotifier<ArtisansState> {
   final GetArtisans _getArtisans;
   final GetSavedTradePref _getSavedTradePref;
@@ -79,12 +78,15 @@ class ArtisansNotifier extends StateNotifier<ArtisansState> {
   }
 
   Future<void> _init() async {
-    // Restore saved trade preference
-    final savedTrade = await _getSavedTradePref();
-    if (savedTrade != null && savedTrade != 'All') {
-      state = state.copyWith(
-        filters: state.filters.copyWith(trade: savedTrade),
-      );
+    try {
+      final savedTrade = await _getSavedTradePref();
+      if (savedTrade != null && savedTrade != 'All') {
+        state = state.copyWith(
+          filters: state.filters.copyWith(trade: savedTrade),
+        );
+      }
+    } catch (_) {
+      // Non-fatal — skip restoring preference
     }
     await fetchArtisans();
   }
@@ -120,9 +122,7 @@ class ArtisansNotifier extends StateNotifier<ArtisansState> {
     double? minRating,
     bool? availableOnly,
   }) async {
-    // Persist trade preference
     if (trade != null) await _saveTradePref(trade);
-
     state = state.copyWith(
       filters: ArtisanFilterParams(
         query: state.filters.query,
@@ -152,16 +152,28 @@ final artisansNotifierProvider =
           saveTradePref: SaveTradePref(repo),
         ),
         loading: () => ArtisansNotifier(
-          getArtisans: GetArtisans(_EmptyRepo()),
-          getSavedTradePref: GetSavedTradePref(_EmptyRepo()),
-          saveTradePref: SaveTradePref(_EmptyRepo()),
+          getArtisans: GetArtisans(_SafeLoadingRepo()),
+          getSavedTradePref: GetSavedTradePref(_SafeLoadingRepo()),
+          saveTradePref: SaveTradePref(_SafeLoadingRepo()),
         ),
         error: (e, _) => throw e,
       );
     });
 
-// Placeholder repo used while SharedPreferences loads
-class _EmptyRepo implements ArtisanRepositoryImpl {
+class _SafeLoadingRepo implements ArtisanRepository {
   @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+  Future<List<Artisan>> getArtisans(ArtisanFilterParams params) async => [];
+
+  @override
+  Future<ArtisanDetail> getArtisanDetail(String id) async =>
+      throw Exception('Repository not ready');
+
+  @override
+  Future<void> submitServiceRequest(ServiceRequest request) async {}
+
+  @override
+  Future<String?> getSavedTradePref() async => null;
+
+  @override
+  Future<void> saveTradePref(String trade) async {}
 }

@@ -1,14 +1,13 @@
+import 'package:contraktor/features/artisan/domain/entities/artisan.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class ArtisanCard extends StatelessWidget {
-  final Map<String, dynamic> artisan;
+  final Artisan artisan;
   const ArtisanCard({super.key, required this.artisan});
 
   @override
   Widget build(BuildContext context) {
-    final bool available = artisan['isAvailable'] as bool;
-
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
@@ -17,20 +16,17 @@ class ArtisanCard extends StatelessWidget {
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(15),
-        onTap: () {
-          context.push('/artisan-profile/${artisan['id']}');
-        },
+        onTap: () => context.push('/artisan-profile/${artisan.id}'),
         child: Padding(
           padding: const EdgeInsets.all(13),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Avatar + availability dot
               Stack(
                 children: [
                   CircleAvatar(
                     radius: 30,
-                    backgroundImage: NetworkImage(artisan['image']),
+                    backgroundImage: NetworkImage(artisan.image),
                     backgroundColor: Colors.grey[200],
                   ),
                   Positioned(
@@ -40,7 +36,7 @@ class ArtisanCard extends StatelessWidget {
                       width: 14,
                       height: 14,
                       decoration: BoxDecoration(
-                        color: available
+                        color: artisan.isAvailable
                             ? const Color(0xFF22C55E)
                             : Colors.grey,
                         shape: BoxShape.circle,
@@ -51,8 +47,6 @@ class ArtisanCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(width: 12),
-
-              // Info
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,7 +55,7 @@ class ArtisanCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          artisan['name'],
+                          artisan.name,
                           style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 18,
@@ -70,7 +64,7 @@ class ArtisanCard extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              '₦${(artisan['hourlyRate'] as int).toString()}',
+                              '₦${artisan.hourlyRate}',
                               style: const TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w500,
@@ -100,7 +94,7 @@ class ArtisanCard extends StatelessWidget {
                         borderRadius: BorderRadius.circular(5),
                       ),
                       child: Text(
-                        artisan['trade'],
+                        artisan.trade,
                         style: const TextStyle(
                           color: Color(0xFF1B5E20),
                           fontWeight: FontWeight.w500,
@@ -123,10 +117,9 @@ class ArtisanCard extends StatelessWidget {
                               const SizedBox(width: 2),
                               Expanded(
                                 child: Text(
-                                  artisan['location'],
+                                  artisan.location,
                                   style: TextStyle(
                                     color: Colors.grey[500],
-                                    fontWeight: FontWeight.w400,
                                     fontSize: 13,
                                   ),
                                   overflow: TextOverflow.ellipsis,
@@ -144,7 +137,7 @@ class ArtisanCard extends StatelessWidget {
                             ),
                             const SizedBox(width: 2),
                             Text(
-                              '${artisan['rating']}',
+                              '${artisan.rating}',
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
@@ -152,7 +145,7 @@ class ArtisanCard extends StatelessWidget {
                             ),
                             const SizedBox(width: 3),
                             Text(
-                              '(${artisan['reviewCount']} reviews)',
+                              '(${artisan.reviewCount} reviews)',
                               style: TextStyle(
                                 fontSize: 13,
                                 color: Colors.grey[500],

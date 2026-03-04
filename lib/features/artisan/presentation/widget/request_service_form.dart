@@ -1,7 +1,22 @@
 import 'package:flutter/material.dart';
 
 class RequestServiceForm extends StatefulWidget {
-  const RequestServiceForm({super.key});
+  final String artisanId;
+
+  final Future<void> Function(
+    String title,
+    String description,
+    String address,
+    String date,
+    String urgency,
+  )
+  onSubmit;
+
+  const RequestServiceForm({
+    super.key,
+    required this.artisanId,
+    required this.onSubmit,
+  });
 
   @override
   State<RequestServiceForm> createState() => _RequestServiceFormState();
@@ -50,17 +65,37 @@ class _RequestServiceFormState extends State<RequestServiceForm> {
       );
       return;
     }
+
     setState(() => _isSubmitting = true);
-    await Future.delayed(const Duration(seconds: 2));
-    if (!mounted) return;
-    setState(() => _isSubmitting = false);
-    Navigator.pop(context);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Request sent successfully!'),
-        backgroundColor: Color(0xFF22C55E),
-      ),
-    );
+
+    try {
+      await widget.onSubmit(
+        _titleCtrl.text.trim(),
+        _descCtrl.text.trim(),
+        _addressCtrl.text.trim(),
+        _selectedDate,
+        _selectedUrgency,
+      );
+
+      if (!mounted) return;
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Request sent successfully!'),
+          backgroundColor: Color(0xFF22C55E),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to send request: $e'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      if (mounted) setState(() => _isSubmitting = false);
+    }
   }
 
   @override
@@ -88,7 +123,6 @@ class _RequestServiceFormState extends State<RequestServiceForm> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // ── Header ───────────────────────────────────────────
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
               child: Column(
@@ -141,9 +175,9 @@ class _RequestServiceFormState extends State<RequestServiceForm> {
               ),
             ),
 
-            // ── Scrollable form ───────────────────────────────────
             Flexible(
               child: SingleChildScrollView(
+                physics: const ClampingScrollPhysics(),
                 padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
                 child: Form(
                   key: _formKey,
@@ -268,14 +302,13 @@ class _RequestServiceFormState extends State<RequestServiceForm> {
                           );
                         }).toList(),
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 200),
                     ],
                   ),
                 ),
               ),
             ),
 
-            // ── Footer button ─────────────────────────────────────
             Container(
               padding: EdgeInsets.fromLTRB(
                 20,

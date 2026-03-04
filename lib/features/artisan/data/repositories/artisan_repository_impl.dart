@@ -30,12 +30,10 @@ class ArtisanRepositoryImpl implements ArtisanRepository {
     List<Artisan> artisans;
 
     if (await _isOnline) {
-      // Fetch fresh data and cache it
       final models = await remoteDataSource.getArtisans();
       await localDataSource.cacheArtisans(models);
       artisans = models;
     } else {
-      // Offline — use cache
       final hasCached = await localDataSource.hasCachedArtisans();
       if (hasCached) {
         artisans = await localDataSource.getCachedArtisans();
@@ -44,7 +42,6 @@ class ArtisanRepositoryImpl implements ArtisanRepository {
       }
     }
 
-    // Apply filters in-memory (mock API doesn't support server-side filtering)
     return _applyFilters(artisans, params);
   }
 

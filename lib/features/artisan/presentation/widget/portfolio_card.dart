@@ -1,7 +1,8 @@
+import 'package:contraktor/features/artisan/domain/entities/artisan_detail.dart';
 import 'package:flutter/material.dart';
 
 class PortfolioCard extends StatelessWidget {
-  final Map<String, dynamic> item;
+  final PortfolioItem item;
   const PortfolioCard({super.key, required this.item});
 
   @override
@@ -13,7 +14,7 @@ class PortfolioCard extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Image.network(item['image'], fit: BoxFit.cover),
+            Image.network(item.image, fit: BoxFit.cover),
             Positioned(
               bottom: 0,
               left: 0,
@@ -31,7 +32,7 @@ class PortfolioCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      item['title'],
+                      item.title,
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -39,7 +40,7 @@ class PortfolioCard extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      item['completedDate'],
+                      item.completedDate,
                       style: const TextStyle(
                         color: Colors.white70,
                         fontSize: 10,

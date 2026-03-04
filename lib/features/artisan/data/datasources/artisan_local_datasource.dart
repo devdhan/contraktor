@@ -13,12 +13,10 @@ abstract class ArtisanLocalDataSource {
 class ArtisanLocalDataSourceImpl implements ArtisanLocalDataSource {
   final SharedPreferences prefs;
 
-  // Keys
   static const _cachedArtisansKey = 'cached_artisans';
   static const _tradePrefKey = 'user_trade_pref';
   static const _cacheTimestampKey = 'artisans_cache_timestamp';
 
-  // Cache is valid for 10 minutes
   static const _cacheDurationMinutes = 10;
 
   ArtisanLocalDataSourceImpl({required this.prefs});

@@ -13,7 +13,6 @@ abstract class ArtisanRemoteDataSource {
 class ArtisanRemoteDataSourceImpl implements ArtisanRemoteDataSource {
   @override
   Future<List<ArtisanModel>> getArtisans() async {
-    // Simulate network delay
     await Future.delayed(const Duration(milliseconds: 800));
 
     final jsonString = await rootBundle.loadString(
@@ -42,14 +41,11 @@ class ArtisanRemoteDataSourceImpl implements ArtisanRemoteDataSource {
       orElse: () => throw Exception('Artisan detail not found for id: $id'),
     );
 
-    // Merge isAvailable from artisan_detail availability block
     return ArtisanDetailModel.fromJson(detailJson as Map<String, dynamic>);
   }
 
   @override
   Future<void> submitServiceRequest(ServiceRequestModel request) async {
-    // Simulate POST request
     await Future.delayed(const Duration(seconds: 1));
-    // In production: replace with http.post(url, body: request.toJson())
   }
 }

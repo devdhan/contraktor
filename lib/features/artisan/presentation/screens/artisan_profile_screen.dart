@@ -1,110 +1,67 @@
+import 'package:contraktor/features/artisan/app/providers/artisans_provider.dart';
+import 'package:contraktor/features/artisan/app/providers/profile_provider.dart';
+import 'package:contraktor/features/artisan/domain/entities/artisan.dart';
+import 'package:contraktor/features/artisan/domain/entities/artisan_detail.dart';
+import 'package:contraktor/features/artisan/domain/entities/service_request.dart';
 import 'package:contraktor/features/artisan/presentation/widget/portfolio_card.dart';
 import 'package:contraktor/features/artisan/presentation/widget/request_service_form.dart';
 import 'package:contraktor/features/artisan/presentation/widget/review_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ArtisanProfileScreen extends StatefulWidget {
+class ArtisanProfileScreen extends ConsumerWidget {
   final String artisanId;
   const ArtisanProfileScreen({super.key, required this.artisanId});
 
   @override
-  State<ArtisanProfileScreen> createState() => _ArtisanProfileScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final profileState = ref.watch(profileNotifierProvider(artisanId));
 
-class _ArtisanProfileScreenState extends State<ArtisanProfileScreen> {
-  // Replace with provider later
-  final Map<String, dynamic> artisan = {
-    "id": "1",
-    "name": "Emeka Okafor",
-    "trade": "Plumber",
-    "location": "Lagos Island, Lagos",
-    "rating": 4.8,
-    "reviewCount": 124,
-    "hourlyRate": 5000,
-    "currency": "NGN",
-    "image": "https://randomuser.me/api/portraits/men/1.jpg",
-    "bio":
-        "Master plumber with 12 years of experience in residential and commercial plumbing installations, repairs, and maintenance.",
-    "isAvailable": true,
-    "tags": ["Plumbing", "Pipe Fitting", "Water Heaters", "Drainage"],
-    "availability": {
-      "workingHours": "8:00 AM - 6:00 PM",
-      "workingDays": [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-      ],
-      "nextAvailableDate": "2026-03-04",
-    },
-    "portfolio": [
-      {
-        "id": "p1",
-        "title": "Kitchen Pipe Overhaul",
-        "description": "Full kitchen plumbing overhaul for a 3-bedroom flat.",
-        "image":
-            "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400",
-        "completedDate": "2025-11-10",
-      },
-      {
-        "id": "p2",
-        "title": "Bathroom Fitting",
-        "description":
-            "Complete bathroom fittings including WC, shower, and sink.",
-        "image":
-            "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400",
-        "completedDate": "2025-12-03",
-      },
-      {
-        "id": "p3",
-        "title": "Drainage System Repair",
-        "description":
-            "Repaired blocked drainage across a commercial property.",
-        "image":
-            "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=400",
-        "completedDate": "2026-01-15",
-      },
-    ],
-    "reviews": [
-      {
-        "reviewer": "Adaeze M.",
-        "rating": 5,
-        "comment": "Emeka was prompt, professional and tidy. Highly recommend!",
-        "date": "2026-02-10",
-      },
-      {
-        "reviewer": "Kola B.",
-        "rating": 5,
-        "comment": "Fixed our burst pipe same day. Lifesaver!",
-        "date": "2026-01-28",
-      },
-      {
-        "reviewer": "Mrs Okoro",
-        "rating": 4,
-        "comment": "Good work but arrived a bit late.",
-        "date": "2026-01-05",
-      },
-    ],
-  };
+    final artisansState = ref.watch(artisansNotifierProvider);
+    final Artisan? artisan =
+        artisansState.artisans.where((a) => a.id == artisanId).isNotEmpty
+        ? artisansState.artisans.firstWhere((a) => a.id == artisanId)
+        : null;
 
-  @override
-  Widget build(BuildContext context) {
-    final bool available = artisan['isAvailable'] as bool;
-    final tags = (artisan['tags'] as List).cast<String>();
-    final portfolio = (artisan['portfolio'] as List)
-        .cast<Map<String, dynamic>>();
-    final reviews = (artisan['reviews'] as List).cast<Map<String, dynamic>>();
-    final availability = artisan['availability'] as Map<String, dynamic>;
-    final workingDays = (availability['workingDays'] as List).cast<String>();
+    if (artisan == null && profileState.isLoading) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(color: Colors.greenAccent),
+        ),
+      );
+    }
+
+    if (artisan == null && profileState.error != null) {
+      return Scaffold(
+        appBar: AppBar(backgroundColor: Colors.greenAccent.shade700),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.error_outline, size: 48, color: Colors.red),
+              const SizedBox(height: 12),
+              Text(profileState.error!, textAlign: TextAlign.center),
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () => ref
+                    .read(profileNotifierProvider(artisanId).notifier)
+                    .loadProfile(artisanId),
+                child: const Text('Retry'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    final a = artisan!;
+    final detail = profileState.detail;
 
     return Scaffold(
       backgroundColor: const Color(0xFFF5F5F5),
       body: CustomScrollView(
         slivers: [
-          // ── App Bar ───────────────────────────────────────────
           SliverAppBar(
             expandedHeight: 220,
             pinned: true,
@@ -154,7 +111,7 @@ class _ArtisanProfileScreenState extends State<ArtisanProfileScreen> {
                             backgroundColor: Colors.white,
                             child: CircleAvatar(
                               radius: 40,
-                              backgroundImage: NetworkImage(artisan['image']),
+                              backgroundImage: NetworkImage(a.image),
                             ),
                           ),
                           Positioned(
@@ -164,7 +121,7 @@ class _ArtisanProfileScreenState extends State<ArtisanProfileScreen> {
                               width: 18,
                               height: 18,
                               decoration: BoxDecoration(
-                                color: available
+                                color: a.isAvailable
                                     ? const Color(0xFF22C55E)
                                     : Colors.grey,
                                 shape: BoxShape.circle,
@@ -179,7 +136,7 @@ class _ArtisanProfileScreenState extends State<ArtisanProfileScreen> {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        artisan['name'],
+                        a.name,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 20,
@@ -191,7 +148,7 @@ class _ArtisanProfileScreenState extends State<ArtisanProfileScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           _pill(
-                            artisan['trade'],
+                            a.trade,
                             Colors.white.withOpacity(0.2),
                             Colors.white,
                           ),
@@ -203,7 +160,7 @@ class _ArtisanProfileScreenState extends State<ArtisanProfileScreen> {
                           ),
                           const SizedBox(width: 2),
                           Text(
-                            artisan['location'],
+                            a.location,
                             style: const TextStyle(
                               color: Colors.white70,
                               fontSize: 12,
@@ -222,28 +179,27 @@ class _ArtisanProfileScreenState extends State<ArtisanProfileScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ── Stats ────────────────────────────────────────
                 Container(
                   color: Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   child: Row(
                     children: [
                       _statItem(
-                        '${artisan['rating']}',
+                        '${a.rating}',
                         'Rating',
                         Icons.star_rounded,
                         const Color(0xFFFBBC04),
                       ),
                       _dividerV(),
                       _statItem(
-                        '${artisan['reviewCount']}',
+                        '${a.reviewCount}',
                         'Reviews',
                         Icons.reviews_outlined,
                         Colors.greenAccent.shade700,
                       ),
                       _dividerV(),
                       _statItem(
-                        '₦${artisan['hourlyRate']}/hr',
+                        '₦${a.hourlyRate}/hr',
                         'Rate',
                         Icons.payments_outlined,
                         const Color(0xFF22C55E),
@@ -253,7 +209,6 @@ class _ArtisanProfileScreenState extends State<ArtisanProfileScreen> {
                 ),
                 const SizedBox(height: 8),
 
-                // ── About ────────────────────────────────────────
                 _sectionCard(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -261,14 +216,14 @@ class _ArtisanProfileScreenState extends State<ArtisanProfileScreen> {
                       _sectionTitle('About'),
                       const SizedBox(height: 10),
                       Text(
-                        artisan['bio'],
+                        a.bio,
                         style: TextStyle(color: Colors.grey[600], fontSize: 14),
                       ),
                       const SizedBox(height: 10),
                       Wrap(
                         spacing: 8,
                         runSpacing: 6,
-                        children: tags
+                        children: a.tags
                             .map(
                               (t) => _pill(
                                 t,
@@ -283,107 +238,26 @@ class _ArtisanProfileScreenState extends State<ArtisanProfileScreen> {
                 ),
                 const SizedBox(height: 8),
 
-                // ── Availability ─────────────────────────────────
-                _sectionCard(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _sectionTitle('Availability'),
-                      const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          Container(
-                            width: 10,
-                            height: 10,
-                            decoration: BoxDecoration(
-                              color: available
-                                  ? const Color(0xFF22C55E)
-                                  : Colors.grey,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            available
-                                ? 'Currently Available'
-                                : 'Currently Unavailable',
-                            style: TextStyle(
-                              fontWeight: FontWeight.w600,
-                              fontSize: 15,
-                              color: available
-                                  ? const Color(0xFF22C55E)
-                                  : Colors.grey,
-                            ),
-                          ),
-                        ],
+                if (profileState.isLoading && detail == null)
+                  const Padding(
+                    padding: EdgeInsets.all(32),
+                    child: Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.greenAccent,
                       ),
-                      const SizedBox(height: 12),
-                      _availRow(
-                        Icons.access_time_rounded,
-                        'Working Hours',
-                        availability['workingHours'],
-                      ),
-                      const SizedBox(height: 6),
-                      _availRow(
-                        Icons.calendar_today_rounded,
-                        'Next Available',
-                        availability['nextAvailableDate'],
-                      ),
-                      const SizedBox(height: 12),
-                      Wrap(
-                        spacing: 6,
-                        runSpacing: 6,
-                        children: workingDays
-                            .map(
-                              (d) => _pill(
-                                d.substring(0, 3),
-                                Colors.greenAccent.shade100,
-                                Colors.greenAccent.shade700,
-                              ),
-                            )
-                            .toList(),
-                      ),
-                    ],
+                    ),
+                  )
+                else if (detail != null) ...[
+                  _AvailabilitySection(
+                    artisan: a,
+                    availability: detail.availability,
                   ),
-                ),
-                const SizedBox(height: 8),
+                  const SizedBox(height: 8),
+                  _PortfolioSection(portfolio: detail.portfolio),
+                  const SizedBox(height: 8),
+                  _ReviewsSection(reviews: detail.reviews),
+                ],
 
-                // ── Portfolio ────────────────────────────────────
-                _sectionCard(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _sectionTitle('Portfolio'),
-                      const SizedBox(height: 12),
-                      SizedBox(
-                        height: 180,
-                        child: ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: portfolio.length,
-                          separatorBuilder: (_, __) =>
-                              const SizedBox(width: 12),
-                          itemBuilder: (_, i) =>
-                              PortfolioCard(item: portfolio[i]), // ← extracted
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 8),
-
-                // ── Reviews ──────────────────────────────────────
-                _sectionCard(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _sectionTitle('Reviews'),
-                      const SizedBox(height: 4),
-                      ...reviews.map(
-                        (r) => ReviewTile(review: r),
-                      ), // ← extracted
-                    ],
-                  ),
-                ),
                 const SizedBox(height: 100),
               ],
             ),
@@ -391,7 +265,6 @@ class _ArtisanProfileScreenState extends State<ArtisanProfileScreen> {
         ],
       ),
 
-      // ── Request Service button ────────────────────────────────
       bottomNavigationBar: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
@@ -411,29 +284,46 @@ class _ArtisanProfileScreenState extends State<ArtisanProfileScreen> {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            onPressed: () => _showRequestForm(context),
+            onPressed: () => _showRequestForm(context, ref, artisanId),
           ),
         ),
       ),
     );
   }
 
-  void _showRequestForm(BuildContext context) {
+  void _showRequestForm(BuildContext context, WidgetRef ref, String id) {
     showCupertinoSheet(
       context: context,
-      builder: (_) =>
-          const Material(child: RequestServiceForm()), // ← extracted
+      builder: (_) => Material(
+        child: RequestServiceForm(
+          artisanId: id,
+          onSubmit: (title, description, address, date, urgency) async {
+            await ref
+                .read(profileNotifierProvider(id).notifier)
+                .submitRequest(
+                  ServiceRequest(
+                    artisanId: id,
+                    serviceTitle: title,
+                    description: description,
+                    address: address,
+                    preferredDate: date,
+                    urgencyLevel: urgency,
+                  ),
+                );
+          },
+        ),
+      ),
     );
   }
 
-  Widget _sectionCard({required Widget child}) => Container(
+  static Widget _sectionCard({required Widget child}) => Container(
     width: double.infinity,
     color: Colors.white,
     padding: const EdgeInsets.all(16),
     child: child,
   );
 
-  Widget _sectionTitle(String title) => Text(
+  static Widget _sectionTitle(String title) => Text(
     title,
     style: const TextStyle(
       fontSize: 18,
@@ -442,40 +332,29 @@ class _ArtisanProfileScreenState extends State<ArtisanProfileScreen> {
     ),
   );
 
-  Widget _statItem(String value, String label, IconData icon, Color color) =>
-      Expanded(
-        child: Column(
-          children: [
-            Icon(icon, color: color, size: 20),
-            const SizedBox(height: 4),
-            Text(
-              value,
-              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-            ),
-            Text(
-              label,
-              style: TextStyle(color: Colors.grey[500], fontSize: 13),
-            ),
-          ],
+  static Widget _statItem(
+    String value,
+    String label,
+    IconData icon,
+    Color color,
+  ) => Expanded(
+    child: Column(
+      children: [
+        Icon(icon, color: color, size: 20),
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
         ),
-      );
-
-  Widget _dividerV() =>
-      Container(width: 1, height: 40, color: Colors.grey[200]);
-
-  Widget _availRow(IconData icon, String label, String value) => Row(
-    children: [
-      Icon(icon, size: 20, color: Colors.greenAccent.shade700),
-      const SizedBox(width: 5),
-      Text(
-        '$label: ',
-        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
-      ),
-      Text(value, style: TextStyle(fontSize: 14, color: Colors.grey[600])),
-    ],
+        Text(label, style: TextStyle(color: Colors.grey[500], fontSize: 13)),
+      ],
+    ),
   );
 
-  Widget _pill(String text, Color bg, Color fg) => Container(
+  static Widget _dividerV() =>
+      Container(width: 1, height: 40, color: Colors.grey[200]);
+
+  static Widget _pill(String text, Color bg, Color fg) => Container(
     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
     decoration: BoxDecoration(
       color: bg,
@@ -486,4 +365,180 @@ class _ArtisanProfileScreenState extends State<ArtisanProfileScreen> {
       style: TextStyle(color: fg, fontSize: 11, fontWeight: FontWeight.w600),
     ),
   );
+}
+
+class _AvailabilitySection extends StatelessWidget {
+  final Artisan artisan;
+  final Availability availability;
+  const _AvailabilitySection({
+    required this.artisan,
+    required this.availability,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      color: Colors.white,
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Availability',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              Container(
+                width: 10,
+                height: 10,
+                decoration: BoxDecoration(
+                  color: artisan.isAvailable
+                      ? const Color(0xFF22C55E)
+                      : Colors.grey,
+                  shape: BoxShape.circle,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                artisan.isAvailable
+                    ? 'Currently Available'
+                    : 'Currently Unavailable',
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
+                  color: artisan.isAvailable
+                      ? const Color(0xFF22C55E)
+                      : Colors.grey,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          _row(
+            Icons.access_time_rounded,
+            'Working Hours',
+            availability.workingHours,
+          ),
+          const SizedBox(height: 6),
+          _row(
+            Icons.calendar_today_rounded,
+            'Next Available',
+            availability.nextAvailableDate,
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 6,
+            runSpacing: 6,
+            children: availability.workingDays
+                .map(
+                  (d) => Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.greenAccent.shade100,
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Text(
+                      d.substring(0, 3),
+                      style: TextStyle(
+                        color: Colors.greenAccent.shade700,
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _row(IconData icon, String label, String value) => Row(
+    children: [
+      Icon(icon, size: 20, color: Colors.greenAccent.shade700),
+      const SizedBox(width: 5),
+      Text(
+        '$label: ',
+        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+      ),
+      Text(value, style: TextStyle(fontSize: 14, color: Colors.grey[600])),
+    ],
+  );
+}
+
+class _PortfolioSection extends StatelessWidget {
+  final List<PortfolioItem> portfolio;
+  const _PortfolioSection({required this.portfolio});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      color: Colors.white,
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Portfolio',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            height: 180,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: portfolio.length,
+              separatorBuilder: (_, __) => const SizedBox(width: 12),
+              itemBuilder: (_, i) => PortfolioCard(item: portfolio[i]),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ReviewsSection extends StatelessWidget {
+  final List<Review> reviews;
+  const _ReviewsSection({required this.reviews});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      color: Colors.white,
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Reviews',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
+          const SizedBox(height: 4),
+          ...reviews.map((r) => ReviewTile(review: r)),
+        ],
+      ),
+    );
+  }
 }
