@@ -1,3 +1,4 @@
+import 'package:contraktor/features/artisan/presentation/screens/artisan_profile_screen.dart';
 import 'package:contraktor/features/artisan/presentation/screens/artisans_screen.dart';
 import 'package:contraktor/features/splash_screen.dart';
 import 'package:go_router/go_router.dart';
@@ -33,6 +34,7 @@ import 'package:go_router/go_router.dart';
 class AppRouter {
   // ========== ROUTE NAMES ==========
   static const String splash = '/';
+  static const String artisanProfile = '/artisan-profile/:id';
   static const String onboarding = '/onboarding';
   static const String welcome = '/welcome';
   static const String clientWelcome = '/clientWelcome';
@@ -75,7 +77,6 @@ class AppRouter {
   static final GoRouter router = GoRouter(
     initialLocation: home,
     debugLogDiagnostics: true,
-    // errorBuilder: (context, state) => ErrorPage(error: state.error.toString()),
     routes: [
       GoRoute(
         path: splash,
@@ -86,6 +87,14 @@ class AppRouter {
         path: home,
         name: 'home',
         builder: (context, state) => const ArtisansScreen(),
+      ),
+      GoRoute(
+        path: artisanProfile,
+        name: 'artisan-profile',
+        builder: (context, state) {
+          final id = state.pathParameters['id']!;
+          return ArtisanProfileScreen(artisanId: id);
+        },
       ),
     ],
     //     GoRoute(
