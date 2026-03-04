@@ -1,0 +1,301 @@
+{
+  "artisan_details": [
+    {
+      "id": "1",
+      "portfolio": [
+        {
+          "id": "p1",
+          "title": "Kitchen Pipe Overhaul",
+          "description": "Full kitchen plumbing overhaul for a 3-bedroom flat in Lagos Island.",
+          "image": "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400",
+          "completedDate": "2025-11-10"
+        },
+        {
+          "id": "p2",
+          "title": "Bathroom Fitting",
+          "description": "Complete bathroom fittings including WC, shower, and sink installation.",
+          "image": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400",
+          "completedDate": "2025-12-03"
+        },
+        {
+          "id": "p3",
+          "title": "Drainage System Repair",
+          "description": "Repaired blocked drainage system across a commercial property.",
+          "image": "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=400",
+          "completedDate": "2026-01-15"
+        }
+      ],
+      "availability": {
+        "isAvailable": true,
+        "nextAvailableDate": "2026-03-04",
+        "workingHours": "8:00 AM - 6:00 PM",
+        "workingDays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+      },
+      "reviews": [
+        { "reviewer": "Adaeze M.", "rating": 5, "comment": "Emeka was prompt, professional and tidy. Highly recommend!", "date": "2026-02-10" },
+        { "reviewer": "Kola B.", "rating": 5, "comment": "Fixed our burst pipe same day. Lifesaver!", "date": "2026-01-28" },
+        { "reviewer": "Mrs Okoro", "rating": 4, "comment": "Good work but arrived a bit late.", "date": "2026-01-05" }
+      ]
+    },
+    {
+      "id": "2",
+      "portfolio": [
+        {
+          "id": "p4",
+          "title": "Solar Panel Wiring",
+          "description": "Installed and wired 5kW solar system for a residential home in Ikeja.",
+          "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=400",
+          "completedDate": "2025-10-20"
+        },
+        {
+          "id": "p5",
+          "title": "Office Rewiring",
+          "description": "Complete rewiring of a 2-floor office building with new distribution boards.",
+          "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400",
+          "completedDate": "2025-12-15"
+        },
+        {
+          "id": "p6",
+          "title": "Inverter Installation",
+          "description": "Installed 3.5kVA inverter with battery bank for a family home.",
+          "image": "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=400",
+          "completedDate": "2026-02-01"
+        }
+      ],
+      "availability": {
+        "isAvailable": true,
+        "nextAvailableDate": "2026-03-04",
+        "workingHours": "7:00 AM - 5:00 PM",
+        "workingDays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+      },
+      "reviews": [
+        { "reviewer": "Emeka T.", "rating": 5, "comment": "Chidinma is the best electrician I have ever worked with!", "date": "2026-02-18" },
+        { "reviewer": "Sandra O.", "rating": 5, "comment": "Very knowledgeable and clean with her work.", "date": "2026-02-05" }
+      ]
+    },
+    {
+      "id": "3",
+      "portfolio": [
+        {
+          "id": "p7",
+          "title": "Custom Wardrobe",
+          "description": "Built a 6-door fitted wardrobe with mirror finish for a master bedroom.",
+          "image": "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400",
+          "completedDate": "2025-09-12"
+        },
+        {
+          "id": "p8",
+          "title": "Office Furniture Set",
+          "description": "Crafted reception desk, bookshelf, and conference table for a startup office.",
+          "image": "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400",
+          "completedDate": "2025-11-30"
+        }
+      ],
+      "availability": {
+        "isAvailable": false,
+        "nextAvailableDate": "2026-03-20",
+        "workingHours": "8:00 AM - 5:00 PM",
+        "workingDays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+      },
+      "reviews": [
+        { "reviewer": "Bisi A.", "rating": 5, "comment": "Tunde's craftsmanship is top notch. The wardrobe is beautiful!", "date": "2025-12-01" },
+        { "reviewer": "Mr Dada", "rating": 4, "comment": "Great work, took a bit longer than expected.", "date": "2025-10-15" }
+      ]
+    },
+    {
+      "id": "4",
+      "portfolio": [
+        {
+          "id": "p9",
+          "title": "5-Bedroom House Painting",
+          "description": "Interior and exterior painting of a duplex in Lekki Phase 1.",
+          "image": "https://images.unsplash.com/photo-1562259949-e8e7689d7828?w=400",
+          "completedDate": "2025-12-20"
+        },
+        {
+          "id": "p10",
+          "title": "Office Interior Makeover",
+          "description": "Repainted and applied decorative texture to a corporate office space.",
+          "image": "https://images.unsplash.com/photo-1571624436279-b272aff752b5?w=400",
+          "completedDate": "2026-01-22"
+        }
+      ],
+      "availability": {
+        "isAvailable": true,
+        "nextAvailableDate": "2026-03-05",
+        "workingHours": "8:00 AM - 6:00 PM",
+        "workingDays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+      },
+      "reviews": [
+        { "reviewer": "Tope R.", "rating": 5, "comment": "Ngozi did an amazing job. The house looks brand new!", "date": "2026-01-30" },
+        { "reviewer": "Ifunanya C.", "rating": 4, "comment": "Very professional and uses quality materials.", "date": "2026-01-10" }
+      ]
+    },
+    {
+      "id": "5",
+      "portfolio": [
+        {
+          "id": "p11",
+          "title": "Perimeter Wall Construction",
+          "description": "Built a 200m perimeter wall with gate pillars for a residential estate.",
+          "image": "https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400",
+          "completedDate": "2025-10-05"
+        },
+        {
+          "id": "p12",
+          "title": "Floor Screeding & Tiling",
+          "description": "Screeded and tiled a 4-bedroom bungalow floor from scratch.",
+          "image": "https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?w=400",
+          "completedDate": "2025-12-28"
+        }
+      ],
+      "availability": {
+        "isAvailable": true,
+        "nextAvailableDate": "2026-03-04",
+        "workingHours": "7:00 AM - 5:00 PM",
+        "workingDays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+      },
+      "reviews": [
+        { "reviewer": "Engineer Lawal", "rating": 5, "comment": "Biodun is highly skilled and delivers on time.", "date": "2026-01-15" },
+        { "reviewer": "Mrs Fashola", "rating": 4, "comment": "Good quality work, reasonable pricing.", "date": "2025-11-20" }
+      ]
+    },
+    {
+      "id": "6",
+      "portfolio": [
+        {
+          "id": "p13",
+          "title": "Security Gate Fabrication",
+          "description": "Fabricated and installed a custom sliding security gate for a compound.",
+          "image": "https://images.unsplash.com/photo-1565034957450-e4db4dae2b19?w=400",
+          "completedDate": "2025-11-18"
+        },
+        {
+          "id": "p14",
+          "title": "Burglary Proof Windows",
+          "description": "Designed and installed burglary proof for all windows in a 3-bedroom flat.",
+          "image": "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?w=400",
+          "completedDate": "2026-01-30"
+        }
+      ],
+      "availability": {
+        "isAvailable": true,
+        "nextAvailableDate": "2026-03-06",
+        "workingHours": "8:00 AM - 6:00 PM",
+        "workingDays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+      },
+      "reviews": [
+        { "reviewer": "Chidi N.", "rating": 4, "comment": "Solid craftsmanship and very durable materials.", "date": "2026-02-02" },
+        { "reviewer": "Hajia Bello", "rating": 5, "comment": "The gate is beautiful and strong. Very satisfied!", "date": "2026-01-31" }
+      ]
+    },
+    {
+      "id": "7",
+      "portfolio": [
+        {
+          "id": "p15",
+          "title": "Multi-Split AC Installation",
+          "description": "Installed 4 split units across floors of a luxury apartment on VI.",
+          "image": "https://images.unsplash.com/photo-1625929422097-4ae39b5d4b38?w=400",
+          "completedDate": "2025-09-25"
+        },
+        {
+          "id": "p16",
+          "title": "Office AC Overhaul",
+          "description": "Serviced and recharged all ACs in a 20-person open-plan office.",
+          "image": "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400",
+          "completedDate": "2026-02-10"
+        }
+      ],
+      "availability": {
+        "isAvailable": false,
+        "nextAvailableDate": "2026-03-15",
+        "workingHours": "9:00 AM - 5:00 PM",
+        "workingDays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+      },
+      "reviews": [
+        { "reviewer": "Mr Adesanya", "rating": 5, "comment": "Seun is very thorough and knows his craft.", "date": "2026-02-12" },
+        { "reviewer": "Toyin F.", "rating": 5, "comment": "Fast, efficient and professional. Will call again.", "date": "2026-01-20" }
+      ]
+    },
+    {
+      "id": "8",
+      "portfolio": [
+        {
+          "id": "p17",
+          "title": "Bathroom Wall Tiling",
+          "description": "Tiled a luxury master bathroom with imported Italian tiles in Abuja.",
+          "image": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400",
+          "completedDate": "2025-12-10"
+        },
+        {
+          "id": "p18",
+          "title": "Living Room Floor",
+          "description": "Laid large-format porcelain tiles across a spacious open-plan living area.",
+          "image": "https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?w=400",
+          "completedDate": "2026-01-28"
+        }
+      ],
+      "availability": {
+        "isAvailable": true,
+        "nextAvailableDate": "2026-03-04",
+        "workingHours": "8:00 AM - 5:00 PM",
+        "workingDays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+      },
+      "reviews": [
+        { "reviewer": "Alhaji Musa", "rating": 5, "comment": "Fatima's precision is unmatched. Spotless finish!", "date": "2026-02-01" },
+        { "reviewer": "Comfort A.", "rating": 4, "comment": "Very neat work, clean site daily.", "date": "2026-01-29" }
+      ]
+    },
+    {
+      "id": "9",
+      "portfolio": [
+        {
+          "id": "p19",
+          "title": "Borehole Connection",
+          "description": "Connected a newly drilled borehole to a 3-flat building water system.",
+          "image": "https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=400",
+          "completedDate": "2025-10-30"
+        }
+      ],
+      "availability": {
+        "isAvailable": true,
+        "nextAvailableDate": "2026-03-04",
+        "workingHours": "8:00 AM - 6:00 PM",
+        "workingDays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+      },
+      "reviews": [
+        { "reviewer": "Pastor Nwosu", "rating": 4, "comment": "Reliable and responds quickly to calls.", "date": "2025-11-05" }
+      ]
+    },
+    {
+      "id": "10",
+      "portfolio": [
+        {
+          "id": "p20",
+          "title": "Inverter System Setup",
+          "description": "Installed a 5kVA inverter with 4 batteries for an off-grid home in Kano.",
+          "image": "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=400",
+          "completedDate": "2025-11-22"
+        },
+        {
+          "id": "p21",
+          "title": "Compound Lighting",
+          "description": "Wired and installed exterior floodlights and security lights around a compound.",
+          "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400",
+          "completedDate": "2026-02-14"
+        }
+      ],
+      "availability": {
+        "isAvailable": true,
+        "nextAvailableDate": "2026-03-05",
+        "workingHours": "8:00 AM - 5:00 PM",
+        "workingDays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+      },
+      "reviews": [
+        { "reviewer": "Malam Usman", "rating": 5, "comment": "Rukayat is very professional and honest.", "date": "2026-02-15" },
+        { "reviewer": "Hajiya Zainab", "rating": 4, "comment": "Good work, came on time and finished on schedule.", "date": "2026-01-25" }
+      ]
+    }
+  ]
+}
